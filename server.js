@@ -15,17 +15,16 @@ app.use(methodOverride("_method"))
 
 app.get("/",async(req,res)=>{
     try {
-        const data = await pool.query("SELECT * FROM tasks ORDER BY created_at DESC ")
+        const data = await pool.query("SELECT * FROM tasks ORDER BY created_at DESC")
         res.render("index.ejs",{tasks:data.rows})
     } catch (error) {
-        console.log(error)
+        console.error(error);
     }
-
 })
 
-app.post("/add",async(req,res)=>{
+app.post("/add", async(req,res)=>{
     try {
-        const {title,description}= req.body
+        const {title,description}=req.body
         await pool.query("INSERT INTO tasks(title,description) VALUES($1,$2)",[title,description])
         res.redirect("/")
     } catch (error) {
@@ -35,13 +34,14 @@ app.post("/add",async(req,res)=>{
 
 app.delete("/delete/:id", async(req,res)=>{
     try {
-        const {id}= req.params;
+        const {id}= req.params
         await pool.query("DELETE FROM tasks WHERE id=$1",[id])
         res.redirect("/")
     } catch (error) {
-        console.error(error);
+        console.log(error)
     }
 })
+
 
 const port = 3000;
 app.listen(port,()=>{

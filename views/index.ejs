@@ -4,32 +4,85 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>To-Do List</title>
-    <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Custom Animation -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    animation: {
+                        fadeIn: "fadeIn 0.8s ease-in-out",
+                        bounceSlow: "bounce 2s infinite",
+                    },
+                    keyframes: {
+                        fadeIn: {
+                            "0%": { opacity: "0" },
+                            "100%": { opacity: "1" },
+                        },
+                    },
+                },
+            },
+        };
+    </script>
 </head>
-<body>
-    <h1>To-Do List</h1>
+<body class="flex flex-col items-center justify-center min-h-screen gap-10 bg-gray-50 text-gray-800">
 
-    <form action="/add" method="POST">
-        <input type="text" name="title" placeholder="Task Title" required>
-        <textarea name="description" placeholder="Task Description"></textarea>
-        <button type="submit">Add Task</button>
+    <!-- Title -->
+    <h1 class="text-4xl font-extrabold text-green-600 bg-green-100 py-2 px-4 rounded-lg shadow-md animate-bounceSlow">
+        To-Do List
+    </h1>
+
+    <!-- Form Container -->
+    <form action="/add" method="POST"
+          class="flex flex-col w-80 bg-white rounded-lg shadow-xl p-6 gap-4 border-t-4 border-green-500 hover:shadow-2xl transition-shadow duration-300">
+
+        <!-- Input Title -->
+        <label class="font-medium text-gray-600">Task Title</label>
+        <input type="text" name="title" placeholder="Enter task title" required
+               class="border border-gray-300 focus:ring-2 focus:ring-green-400 focus:outline-none rounded-md p-2 text-gray-700 placeholder-gray-400 transition duration-300">
+
+        <!-- Textarea Description -->
+        <label class="font-medium text-gray-600">Task Description</label>
+        <textarea name="description" placeholder="Enter task description" rows="4" required
+                  class="border border-gray-300 focus:ring-2 focus:ring-green-400 focus:outline-none rounded-md p-2 text-gray-700 placeholder-gray-400 transition duration-300"></textarea>
+
+        <!-- Submit Button -->
+        <button type="submit"
+                class="bg-green-500 text-white font-semibold py-2 rounded-md hover:bg-green-600 hover:scale-105 transition-transform duration-300">
+            Add Task
+        </button>
     </form>
+
+    <!-- Task List -->
     <% if(tasks.length === 0){ %>
-        <p class="p-not">No task here, please put some</p>
-    <% }else{ %>
-        <ul>
+        <p class="text-center text-gray-500 text-lg font-medium animate-fadeIn">No tasks yet, please add some.</p>
+    <% } else { %>
+        <ul class="w-full max-w-2xl bg-white rounded-lg shadow-lg overflow-hidden animate-fadeIn">
             <% tasks.forEach(task => { %>
-                <li id="<%= task.id %>">
-                    <strong><%= task.title %> </strong><br>
-                    <%= task.description %><br>
-                    <small>Created at: <%= new Date(task.created_at).toLocaleString() %></small>
-                    <small><%= task.id %></small>
-                    <form action="/delete/<%= task.id %>?_method=DELETE" method="post"><button type="submit">Delete</button></form>
+                <li id="<%= task.id %>" class="p-5 border-b last:border-b-0 flex flex-col gap-2 hover:bg-gray-100 transition duration-300">
+                    <!-- Task Title -->
+                    <h3 class="text-xl font-bold text-green-700"><%= task.title %></h3>
+
+                    <!-- Task Description -->
+                    <p class="text-gray-600"><%= task.description %></p>
+
+                    <!-- Metadata -->
+                    <div class="flex justify-between items-center text-sm text-gray-500">
+                        <small>Created at: <%= new Date(task.created_at).toLocaleString() %></small>
+                        <small class="font-mono text-xs">ID: <%= task.id %></small>
+                    </div>
+
+                    <!-- Delete Button -->
+                    <form action="/delete/<%= task.id %>?_method=DELETE" method="post" class="text-right">
+                        <button type="submit"
+                                class="bg-red-500 text-white px-4 py-2 rounded-md hover:bg-red-600 hover:scale-105 transition-transform duration-300">
+                            Delete
+                        </button>
+                    </form>
                 </li>
             <% }) %>
         </ul>
     <% } %>
-
 
 </body>
 </html>
