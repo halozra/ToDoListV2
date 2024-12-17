@@ -1,10 +1,12 @@
 import pkg from 'pg';
-const { Pool } = pkg;
+const { Pool } = pkg; // Import Pool dari modul pg
 
-export const pool = new Pool({
-  user: 'postgres',           // Username PostgreSQL kamu
-  host: 'localhost',          // Host database
-  database: 'nama_database',  // Nama database kamu
-  password: '123456',       // Password PostgreSQL
-  port: 5432,                 // Port default PostgreSQL
+const pool = new Pool({
+    user: 'postgres',        // Username PostgreSQL kamu
+    host: 'localhost',       // Default localhost
+    database: 'nama_database', // Ganti dengan nama database kamu
+    password: 'password_kamu', // Password PostgreSQL kamu
+    port: 5432               // Default port PostgreSQL
 });
+
+export default pool; // Ekspor koneksi pool

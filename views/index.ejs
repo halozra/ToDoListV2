@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>To-Do List</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <h1>To-Do List</h1>
+
+    <form action="/add" method="POST">
+        <input type="text" name="title" placeholder="Task Title" required>
+        <textarea name="description" placeholder="Task Description"></textarea>
+        <button type="submit">Add Task</button>
+    </form>
+    <% if(tasks.length === 0){ %>
+        <p class="p-not">No task here, please put some</p>
+    <% }else{ %>
+        <ul>
+            <% tasks.forEach(task => { %>
+                <li id="<%= task.id %>">
+                    <strong><%= task.title %> </strong><br>
+                    <%= task.description %><br>
+                    <small>Created at: <%= new Date(task.created_at).toLocaleString() %></small>
+                    <small><%= task.id %></small>
+                    <form action="/delete/<%= task.id %>?_method=DELETE" method="post"><button type="submit">Delete</button></form>
+                </li>
+            <% }) %>
+        </ul>
+    <% } %>
+
+
+</body>
+</html>
